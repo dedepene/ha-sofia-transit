@@ -32,7 +32,7 @@ This custom integration for Home Assistant provides real-time information about 
 1. In Home Assistant, go to **Settings** > **Devices & Services**
 2. Click **+ Add Integration** and search for "Sofia Transit"
 3. Enter the bus stop IDs as a comma-separated list (e.g., "1234,5678")
-   - You can find these IDs in the URL when checking a stop on [https://www.sofiatraffic.bg/](https://www.sofiatraffic.bg/bg/public-transport)
+   - You can find these IDs in the URL when checking a stop on <a href="https://www.sofiatraffic.bg/bg/public-transport" target="_blank">https://www.sofiatraffic.bg/</a>
 
 ## Usage
 
