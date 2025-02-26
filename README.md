@@ -32,7 +32,7 @@ This custom integration for Home Assistant provides real-time information about 
 1. In Home Assistant, go to **Settings** > **Devices & Services**
 2. Click **+ Add Integration** and search for "Sofia Transit"
 3. Enter the bus stop IDs as a comma-separated list (e.g., "1234,5678")
-   - You can find these IDs in the URL when checking a stop on [https://www.sofiatraffic.bg/](https://www.sofiatraffic.bg/)
+   - You can find these IDs in the URL when checking a stop on [https://www.sofiatraffic.bg/](https://www.sofiatraffic.bg/bg/public-transport)
 
 ## Usage
 
@@ -49,7 +49,7 @@ Sensor naming format:
 - `TB` - Trolleybus
 - `N` - Night line
 
-Note: Metro lines are not included in this integration.
+Note: Metro lines are not included in the initial version of this integration.
 
 ## Troubleshooting
 
