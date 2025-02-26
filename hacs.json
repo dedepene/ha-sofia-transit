@@ -1,0 +1,7 @@
+{
+  "name": "Sofia Transit",
+  "render_readme": true,
+  "title": "Sofia Transit",
+  "type": "integration",
+  "domains": ["sofia_transit"]
+}

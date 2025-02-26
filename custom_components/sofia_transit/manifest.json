@@ -1,0 +1,18 @@
+{
+  "domain": "sofia_transit",
+  "name": "Sofia Transit",
+  "version": "1.0.1",
+  "codeowners": [
+    "@dedepene"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://www.home-assistant.io/integrations/sofia_transit",
+  "homekit": {},
+  "iot_class": "cloud_polling",
+  "requirements": [
+    "aiohttp>=3.8.5,<3.12"
+  ],
+  "ssdp": [],
+  "zeroconf": []
+}
