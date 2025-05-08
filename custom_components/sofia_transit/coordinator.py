@@ -29,9 +29,9 @@ class SofiaTransitUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
     async def _async_update_data(self) -> dict[str, Any]:
         """Fetch and transform data from Sofia Transit API."""
-        try:
-            all_lines = []
-            for stop_id in self.bus_stop_ids:
+        all_lines = []
+        for stop_id in self.bus_stop_ids:
+            try:
                 raw_data = await async_fetch_data_from_sofiatraffic(
                     API_URL, self.session, {"stop": stop_id}
                 )
@@ -48,8 +48,6 @@ class SofiaTransitUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                             prefix = "A"  # bus
                         case 2:
                             prefix = "TM"  # tram
-                        # case 3:
-                        #    prefix = "M"  # metro
                         case 4:
                             prefix = "TB"  # trolley
                         case 5:
@@ -61,7 +59,10 @@ class SofiaTransitUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     )
                     lines.append({"line": full_line, "next_bus": next_bus})
                 all_lines.extend(lines)
-            _LOGGER.debug("Lines received: %s", all_lines)
-            return {"lines": all_lines}  # noqa: TRY300
-        except Exception as err:
-            raise UpdateFailed(f"Error fetching data: {err}") from err
+            except Exception as err:
+                _LOGGER.error("Error fetching data for stop %s: %s", stop_id, err)
+                continue  # Skip this stop and proceed with others
+        if not all_lines:
+            raise UpdateFailed("No valid data received for any stop.")
+        _LOGGER.debug("Lines received: %s", all_lines)
+        return {"lines": all_lines}
