@@ -4,7 +4,7 @@ This custom integration for Home Assistant provides real-time information about 
 
 ## Features
 
-- Real-time arrival information for buses, trams, and trolleybuses in Sofia
+- Real-time arrival information for buses, trams, trolleybuses, and metro in Sofia
 - Support for multiple bus stops
 - Updates every 60 seconds
 - Sensors showing minutes until next vehicle arrival
@@ -41,15 +41,15 @@ After configuration, the integration will create sensors for each public transpo
 Sensor naming format:
 - `sensor.sofia_transit_stop_id_prefix_number`
   - For example: `sensor.sofia_transit_1234_TM6` for tram line 6 at stop 1234
+  - For example: `sensor.sofia_transit_1234_M1` for metro line M1 at stop 1234
 
 ### Vehicle Type Prefixes
 
 - `A` - Bus
 - `TM` - Tram
 - `TB` - Trolleybus
+- `M` - Metro
 - `N` - Night line
-
-Note: Metro lines are not included in the initial version of this integration.
 
 ## Troubleshooting
 

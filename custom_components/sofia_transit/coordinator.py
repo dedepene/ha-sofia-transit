@@ -40,14 +40,15 @@ class SofiaTransitUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     details = bus.get("details", [])
                     next_bus = details[0].get("t") if details else None
                     bus_type = bus.get("type")
-                    if bus_type == 3:
-                        continue  # skip metro lines
                     name = bus.get("name")
                     match bus_type:
                         case 1:
                             prefix = "A"  # bus
                         case 2:
                             prefix = "TM"  # tram
+                        case 3:
+                            # metro
+                            prefix = ("" if isinstance(name, str) and name and name.upper().startswith("M") else "M")
                         case 4:
                             prefix = "TB"  # trolley
                         case 5:
