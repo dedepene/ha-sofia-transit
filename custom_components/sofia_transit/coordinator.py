@@ -6,7 +6,6 @@ from typing import Any
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from torch.jit.frontend import build_stmt, build_stmts
 
 from .const import API_URL, UPDATE_INTERVAL
 from .helpers import async_fetch_data_from_sofiatraffic
