@@ -6,6 +6,7 @@ from typing import Any
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from torch.jit.frontend import build_stmt, build_stmts
 
 from .const import API_URL, UPDATE_INTERVAL
 from .helpers import async_fetch_data_from_sofiatraffic
@@ -49,6 +50,7 @@ class SofiaTransitUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                         case 3:
                             # metro
                             prefix = ("" if isinstance(name, str) and name and name.upper().startswith("M") else "M")
+                            name = bus.get("route_ext_id")
                         case 4:
                             prefix = "TB"  # trolley
                         case 5:
@@ -58,7 +60,11 @@ class SofiaTransitUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     full_line = (
                         f"{stop_id}_{prefix}{name}" if prefix else f"{stop_id}_{name}"
                     )
-                    lines.append({"line": full_line, "next_bus": next_bus})
+                    busstop_begin, busstop_end = "", ""
+                    routename = bus.get('route_name')
+                    if isinstance(name, str) and " - " in routename:
+                        busstop_begin, busstop_end = routename.split(" - ")
+                    lines.append({"line": full_line, "next_bus": next_bus, "busstop_begin": busstop_begin, "busstop_end": busstop_end})
                 all_lines.extend(lines)
             except Exception as err:
                 _LOGGER.error("Error fetching data for stop %s: %s", stop_id, err)
