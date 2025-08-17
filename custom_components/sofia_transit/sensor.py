@@ -51,8 +51,25 @@ class SofiaTransitSensor(CoordinatorEntity, SensorEntity):
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
-        """Return additional sensor attributes."""
-        return {"line": self._line_id, "busstop_begin": self._busstop_begin, "busstop_end": self._busstop_end}
+        """Return additional sensor attributes, including 'after next' arrivals."""
+        data = self.coordinator.data
+        after_next_str = None
+        if data:
+            for line in data.get("lines", []):
+                if line.get("line") == self._line_id:
+                    after_next = line.get("after_next", [])
+                    # Only show as comma-separated string if there are any
+                    if after_next:
+                        after_next_str = ", ".join(str(x) for x in after_next)
+                    break
+        attrs = {
+            "line": self._line_id,
+            "busstop_begin": self._busstop_begin,
+            "busstop_end": self._busstop_end,
+        }
+        if after_next_str is not None:
+            attrs["after next"] = after_next_str
+        return attrs
 
 
 # New async_setup_entry function for the sensor platform

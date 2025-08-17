@@ -38,7 +38,10 @@ class SofiaTransitUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 lines = []
                 for bus in raw_data.values():
                     details = bus.get("details", [])
-                    next_bus = details[0].get("t") if details else None
+                    # Collect all arrival times ("t") in details
+                    arrivals = [d.get("t") for d in details if "t" in d]
+                    next_bus = arrivals[0] if arrivals else None
+                    after_next = arrivals[1:] if len(arrivals) > 1 else []
                     bus_type = bus.get("type")
                     name = bus.get("name")
                     match bus_type:
@@ -63,7 +66,13 @@ class SofiaTransitUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     routename = bus.get('route_name')
                     if isinstance(name, str) and " - " in routename:
                         busstop_begin, busstop_end = routename.split(" - ")
-                    lines.append({"line": full_line, "next_bus": next_bus, "busstop_begin": busstop_begin, "busstop_end": busstop_end})
+                    lines.append({
+                        "line": full_line,
+                        "next_bus": next_bus,
+                        "after_next": after_next,
+                        "busstop_begin": busstop_begin,
+                        "busstop_end": busstop_end
+                    })
                 all_lines.extend(lines)
             except Exception as err:
                 _LOGGER.error("Error fetching data for stop %s: %s", stop_id, err)
